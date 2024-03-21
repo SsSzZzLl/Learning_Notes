@@ -501,3 +501,50 @@ if __name__ == '__main__':
 ```
 
 <img src="img/image-20240320160532084.png" alt="image-20240320160532084" style="zoom:150%;" />
+
+## DEMO05_MINMAXSCALER_FOR_LOAD_BREAST_CANCER
+
+### Common Methods Of Normalization
+
+#### Linear Normalization
+
+##### Method Ⅰ. Min-Max Normalization
+
+$$
+x^* = \frac{x - min(x)}{max(x) - min(x)}
+$$
+
+##### Method Ⅱ. Average Normalization
+
+$$
+x ^ * = \frac{x - μ}{max(x) - min(x)}  \quad (μ : mean)
+$$
+
+#### Nonlinear Normalization
+
+##### Method Ⅰ. Use Logarithmic Functions To Perform Dimensionless Transformations
+
+$$
+x ^ * = \lg x
+$$
+
+##### Method Ⅱ. Use The Inverse Cotangent Function To Perform Dimensionless Transformations
+
+$$
+x ^ * = \frac{2\arctan x}{\pi}
+$$
+
+### Standardized Common Methods
+
+#### Z-score Normalization
+
+$$
+x ^ * = \frac{x - μ}{σ}
+$$
+
+### Common Methods Of Centralization
+
+$$
+x ^ * = x - μ
+$$
+
