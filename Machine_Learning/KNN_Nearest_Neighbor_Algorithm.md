@@ -1,4 +1,4 @@
-# KNN最邻近算法	
+# KNN Nearest Neighbor Algorithm
 
 ## 1.DEMO01_PYTHON_FOR_KNN
 
