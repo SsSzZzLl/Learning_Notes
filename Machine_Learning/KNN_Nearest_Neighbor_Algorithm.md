@@ -191,7 +191,7 @@ clf.score(Xtest, Ytest)
 
 ![image-20240320100947079](img/image-20240320100947079.png)
 
-## DEMO03_SCIKIT-LEARN_FOR_KNN_DATASET_BREAST_CANCER
+## 3.DEMO03_SCIKIT-LEARN_FOR_KNN_DATASET_BREAST_CANCER
 
 ```python
 # 导包
@@ -350,7 +350,7 @@ plt.plot(k_range, np.array(scores) - np.array(var) * 10, color = 'red', linestyl
 
 <img src="img/image-20240320172926716.png" alt="image-20240320172926716" style="zoom: 50%;" />
 
-## DEMO04_PYTORCH_FOR_KNN_DATASET_MNIST
+## 4.DEMO04_PYTORCH_FOR_KNN_DATASET_MNIST
 
 ```python
 '''
@@ -502,7 +502,7 @@ if __name__ == '__main__':
 
 <img src="img/image-20240320160532084.png" alt="image-20240320160532084" style="zoom:150%;" />
 
-## DEMO05_MINMAXSCALER_FOR_LOAD_BREAST_CANCER
+## 5.DEMO05_MINMAXSCALER_FOR_LOAD_BREAST_CANCER
 
 ### Common Methods Of Normalization
 
