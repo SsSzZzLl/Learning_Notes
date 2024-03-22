@@ -548,3 +548,191 @@ $$
 x ^ * = x - μ
 $$
 
+```python
+# 导包
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from IPython.core.interactiveshell import InteractiveShell # 这个对象设置所有行全部输出
+  
+# 导入威斯康辛州女性乳腺癌患病检测数据集
+from sklearn.datasets import load_breast_cancer
+
+# 导入数据集划分工具
+from sklearn.model_selection import train_test_split
+
+# 导入KNN分类器对象
+from sklearn.neighbors import KNeighborsClassifier
+
+# 设置该对象ast_node_interactivity的属性值为all，表示notebook下每一行有输出的代码全部输出运算结果
+InteractiveShell.ast_node_interactivity = "all"
+
+# 解决坐标轴刻度负号乱码
+plt.rcParams['axes.unicode_minus'] = False
+
+# 解决中文乱码问题
+plt.rcParams['font.sans-serif'] = ['Simhei']
+plt.style.use('ggplot')
+```
+
+```python
+# 归一化实现：原生Python代码实现
+
+# 准备数据
+data = [[-1, 2], [-0.5, 6], [0, 10], [1, 18]]
+data = pd.DataFrame(data)
+data
+```
+
+```python
+# 手写归一化算法
+Min_Max_Scaler_Data = (data - np.min(data, axis=0)) / (np.max(data, axis=0) - np.min(data, axis=0))
+Min_Max_Scaler_Data
+```
+
+```python
+# sklearn提供归一化API实现威斯康辛州女性乳腺癌患病检测的完整模型
+
+# 导入交叉验证API
+from sklearn.model_selection import cross_val_score as cvs
+
+# 导入归一化算法
+from sklearn.preprocessing import MinMaxScaler 
+```
+
+```python
+# 加载数据，并进行简单的数据探索
+dataset = load_breast_cancer()
+x = dataset.data
+y = dataset.target
+pd.DataFrame(x, columns=dataset.feature_names)
+pd.DataFrame(y)
+x.shape
+```
+
+```python
+# 划分训练集和数据集
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y, test_size=0.3, random_state=123)
+```
+
+```python
+# 第一种方案：先直接将训练集和测试集都完成归一化操作
+
+train_df_mms = MinMaxScaler()
+test_df_mms = MinMaxScaler()
+
+pd.DataFrame(Xtrain)
+
+# MinMaxScaler对象与sklearn封装的其余算法对象所提供的方法是一致的
+# fit：输入指定的数据集，对该数据集进行归一化操作
+# transform：转换操作，返回最终完成归一化操作的数据集
+# 这两个方法，一先一后的操作，所以单独在提供一个整体的API
+# fit_transform；直接输入数据集，完成归一化操作后返回归一化之后的数据集
+train_df_mms_1 = train_df_mms.fit_transform(Xtrain)
+test_df_mms_1 = test_df_mms.fit_transform(Xtest)
+
+pd.DataFrame(train_df_mms_1)
+```
+
+```python
+# 绘制带有K折交叉验证的超参数学习曲线对超参数K进行调优，求解出其局部最优解
+from sklearn.model_selection import cross_val_score
+```
+
+```python
+# 准备保存K折交叉验证评分结果的数组
+scores_1 = []
+scores_2 = []
+
+#  准备保存K折交叉验证的评分方差的结果的数据
+var_1 = []
+var_2 = []
+
+k_range = range(1, 20)
+
+# iter
+for i in k_range:
+  
+  # 构建KNN分类模型
+  clf = KNeighborsClassifier(n_neighbors = i)
+  
+  # 完成指定一次10折交叉验证，伴随交叉验证会完成10次模型训练和评估，求得10折交叉验证时模型的评分的均值，保存在scores数组
+  cvs_1 = cross_val_score(clf, Xtrain, Ytrain, cv=10)
+  cvs_2 = cross_val_score(clf, train_df_mms_1, Ytrain, cv=10)
+  
+  
+  # 保存评分的均值
+  scores_1.append(cvs_1.mean())
+  scores_2.append(cvs_2.mean())
+  
+  # 保存评分的方差
+  var_1.append(cvs_1.var())
+  var_2.append(cvs_2.var())
+  
+
+# 绘制带有K折交叉验证的超参数学习曲线，并使用二倍放大的方差给各轮评分的均值相对其评分均值的偏离程度
+plt.plot(k_range, scores_1, color = 'blue')
+
+# 绘制带有正负二倍方差的评分均值的曲线
+plt.plot(k_range, np.array(scores_1) + np.array(var_1) * 2, color = 'red', linestyle = '-.')
+plt.plot(k_range, np.array(scores_1) - np.array(var_1) * 2, color = 'red', linestyle = '-.')
+```
+
+<img src="img/image-20240322134443186.png" alt="image-20240322134443186" style="zoom: 67%;" />
+
+```python
+# 绘制带有K折交叉验证的超参数学习曲线，并使用二倍放大的方差给各轮评分的均值相对其评分均值的偏离程度
+plt.plot(k_range, scores_2, color = 'blue')
+
+# 绘制带有正负二倍方差的评分均值的曲线
+plt.plot(k_range, np.array(scores_2) + np.array(var_2) * 2, color = 'red', linestyle = '-.')
+plt.plot(k_range, np.array(scores_2) - np.array(var_2) * 2, color = 'red', linestyle = '-.')
+```
+
+<img src="img/image-20240322134524186.png" alt="image-20240322134524186" style="zoom:67%;" />
+
+**It can be concluded from the above two pictures : *If the data is normalized, it <u>may</u> have a positive impact***
+
+```python
+# 下一步验证：验证两种不同模型（输入了未执行归一化的训练集所构建的模型和输入了已执行归一化训练集在未进行归一化的测试集的表现以及在以进行归一化测试集的表现）
+Xtrain
+test_df_mms_1
+
+Xtrain
+train_df_mms_1
+```
+
+```python
+# 构建KNN分类器模型
+clf = KNeighborsClassifier()
+
+# 输入未进行归一化的训练集模型
+clf_1 = clf.fit(Xtrain, Ytrain)
+
+# 输入未进行归一化的测试集训练模型
+y_pred_1 = clf_1.predict(Xtest)
+
+# 导入准确率评估指标
+from sklearn.metrics import accuracy_score
+print('在未进行归一化的训练集上训练得到的，将其在未进行归一化的测试集上验证模型的准确率为：{}'.format(accuracy_score(y_pred_1, Ytest)))
+
+# 输入已进行归一化的测试集训练模型
+y_pred_2 = clf_1.predict(test_df_mms_1)
+print('在未进行归一化的训练集上训练得到的，将其在已进行归一化的测试集上验证模型的准确率为：{}'.format(accuracy_score(y_pred_2, Ytest)))
+
+# 输入已进行归一化的训练集模型
+clf_2 = clf.fit(train_df_mms_1, Ytrain)
+
+# 输入未进行归一化的测试集训练模型
+y_pred_3 = clf_2.predict(Xtest)
+print('在已进行归一化的训练集上训练得到的，将其在未进行归一化的测试集上验证模型的准确率为：{}'.format(accuracy_score(y_pred_3, Ytest)))
+
+# 输入已进行归一化的测试集训练模型
+y_pred_4 = clf_2.predict(test_df_mms_1)
+print('在已进行归一化的训练集上训练得到的，将其在已进行归一化的测试集上验证模型的准确率为：{}'.format(accuracy_score(y_pred_4, Ytest)))
+```
+
+<img src="img/image-20240322134620385.png" alt="image-20240322134620385" style="zoom:67%;" />
+
+**FINAL RESULTS : *First divide the data set into a training set and a test set, then normalize it, and do not normalize the test set.***
