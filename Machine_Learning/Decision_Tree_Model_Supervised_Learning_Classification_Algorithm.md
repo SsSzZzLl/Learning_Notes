@@ -3,17 +3,23 @@
 $\textcolor{orange} {Entropy}$ —— represents the degree of confusion and uncertainty of an object
 
 Entropy function expression :
+
 $$
 Entorpy = -\sum_{i = 1}^{n} p(x_i)\log_2p(x_i)
 $$
+
 When type A and type B each account for 50% probability : 
+
 $$
 Entorpy = -[\frac{1}{2}\log_2(\frac{1}{2}) + \frac{1}{2}\log_2(\frac{1}{2})]= -(-\frac{1}{2} - \frac{1}{2}) = 1
 $$
+
 When there is only type A or type B :
+
 $$
 Entorpy = -[1 * \log_21 + 0] = -(0 + 0) = 0
 $$
+
 When the entropy is maximum 1, it is the state with the worst classification effect. On the contrary, when it is minimum 0, it is the state of complete classification.
 
 $\textcolor{orange}{Information\ Gain}$ —— The measurement method of describing the division effect of test conditions is the difference between the information entropy of the parent node and the weighted average of the information entropy of each leaf node.
