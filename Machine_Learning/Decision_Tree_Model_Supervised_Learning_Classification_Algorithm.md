@@ -28,7 +28,7 @@ $$
 Gain(D, a) = Ent(D) - \sum_{i = 1}^{v}\frac{|D_v|}{|D|}Ent(D_v)
 $$
 
-$Ent(D)$is the impurity of the parent node, $\sum_{i = 1}^{v}\frac{|D_v|}{|D|}Ent(D_v)$is the weighted average of the impurity of each branch node under the support of each weight
+ $Ent(D) $is the impurity of the parent node,  $\sum_{i = 1}^{v}\frac{|D_v|}{|D|}Ent(D_v)$ is the weighted average of the impurity of each branch node under the support of each weight
 
 $\textcolor{orange}{Information\ Gain\ Rate}$ :
 
