@@ -17,12 +17,15 @@ $$
 When the entropy is maximum 1, it is the state with the worst classification effect. On the contrary, when it is minimum 0, it is the state of complete classification.
 
 $\textcolor{orange}{Information\ Gain}$ —— The measurement method of describing the division effect of test conditions is the difference between the information entropy of the parent node and the weighted average of the information entropy of each leaf node.
+
 $$
 Gain(D, a) = Ent(D) - \sum_{i = 1}^{v}\frac{|D_v|}{|D|}Ent(D_v)
 $$
+
 $Ent(D)$is the impurity of the parent node, $\sum_{i = 1}^{v}\frac{|D_v|}{|D|}Ent(D_v)$is the weighted average of the impurity of each branch node under the support of each weight
 
 $\textcolor{orange}{Information\ Gain\ Rate}$ :
+
 $$
 Gain_{ratio}(D, A) = \frac{Gain(D, A)}{IV(A)}
 $$
