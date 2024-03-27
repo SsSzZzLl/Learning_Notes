@@ -288,5 +288,26 @@ Differentiation between Pre-Pruning and Post-Pruning：
 | Fit risk           | Reduced the risk of overfitting, but due to the nature of greedy algorithms, it prohibits the expansion of subsequent branches and brings the risk of underfitting | Create a decision tree first and then examine it one by one from bottom to top, ensuring the prevention of overfitting while reducing the risk of underfitting, resulting in stronger generalization ability |
 | Time cost          |                Low training and testing costs                | Training expenses are too high                               |
 
-We mainly discuss the implementation process of $\textcolor{orange}{Cost\ Complexity\ Pruning.\ CCP}$(代价复杂度剪枝)
+We mainly discuss the implementation process of $\textcolor{orange}{Cost\ Complexity\ Pruning.\ CCP}$​(代价复杂度剪枝) —— A pruning algorithm implemented by minimizing the overall loss function of the decision tree
 
+If there is a fully growing decision tree T with $|T|$ leaf nodes and N sample space, t is the leaf node of decision tree T, and there are $N_t$ sample points on this leaf node, among which there are $N_t^k$ (k = 1, 2, ..., k)sample points belonging to the k-th class, then the overall loss function of the decision tree can be defined as(设有一棵完全生长的决策树$\textcolor{orange}{T}$，其叶子节点的个数为$\textcolor{orange}{|T|}$ ，样本空间为$\textcolor{orange}{N}$，$\textcolor{orange}{t}$为决策树$\textcolor{orange}{T}$的叶子节点，且该叶子节点上有$\textcolor{orange}{N_t}$个样本点，其中属于属于第$\textcolor{orange}{k}$类的样本点有$\textcolor{orange}{N_t^k, (k = 1, 2, ..., k)}$个，则决策树的整体损失函数可以定义为：) :
+$$
+C_α(T) = C(T) + α|T|
+$$
+Where $\textcolor{orange}{C(T)}$ represents the prediction error of the model on the training data :
+$$
+Cα(T) = \sum_{t = 1}^{|T|}\frac{N_t}{N}H_t(T)+α|T|
+$$
+Where $\textcolor{orange}{H_t(T)}$ represents the information entropy or Gini coefficient of the leaf node $\textcolor{orange}{t}$
+$$
+H_t(T) = -\sum_{k = 1}^{k}\frac{N_t^k}{N_t}\log_2\frac{N_t^k}{N_t}\\
+or\\
+H_t(T) = 1 - \sum_{k = 1}^{k}(\frac{N_t^k}{N_t})^2
+$$
+ The formula for $\textcolor{orange}{Gini\ Coefficient}$ is as follows
+$$
+Gini(D) = 1 - \sum_{k = 1}^{k}(\frac{|C_k|}{D})^2
+\\
+Gini(D|A) = \frac{D_1}{D}Gini(D_1) + \frac{|D_2|}{D}Gini(D_2)
+$$
+$\textcolor{orange}{|D|}$ represents the number of samples in dataset $\textcolor{orange}{D}$,  $\textcolor{orange}{D_1}$ and $\textcolor{orange}{D_2}$ represent the number of samples in subsets
