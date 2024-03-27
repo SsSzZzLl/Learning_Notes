@@ -192,3 +192,101 @@ getSplitData(dataset, selectBestSplit(dataset), 1)
 ```
 
 <img src="img/image-20240326171458834.png" alt="image-20240326171458834" style="zoom:50%;" />
+
+```python
+dataset.iloc[:, -1].value_counts()
+```
+
+<img src="img/image-20240327110424859.png" alt="image-20240327110424859" style="zoom:50%;" />
+
+### Decision Tree Model - ID3 Algorithm
+
+```python
+# 4.原生python代码实现基于最大信息增益划分数据集并递归建造决策树模型的ID3算法模型复现
+def createID3Tree(dataset):  
+  '''
+    :params dataset:指定的数据集
+    :return:以字典结构构建的最终ID3算法决策树模型
+  '''
+  
+  # 先取出数据集中所有特征列 —— 取出的是所有特征的列索引名称
+  feature_list = list(dataset.columns)
+  
+  # 获取数据集中最后一列的列索引名称 —— 即标签 —— 然后再获取标签的所有类别及各类别的样本数量
+  classes = dataset.iloc[:, -1].value_counts()
+  
+  # 判断：当前数据集中标签的各个类别中的各个类别及各类别的样本数量中，样本数量最大的类别的样本数量是否直接等于样本容量的大小 ——   即：表示当前样本中是否所有样本同属同一类别
+  # 或者：当前数据集是否只有一个特征列
+  if classes[0] == dataset.shape[0] or dataset.shape[1] == 1:
+    return classes.index[0]
+  
+  # 开始真正的ID3算法递归构建决策树的过程
+  
+  # 先选出最优划分特征列
+  axis = selectBestSplit(dataset)
+  
+  # 根据选出的最优划分特征的列索引，获取该列索引对应的该列特征
+  best_features = feature_list[axis]
+
+  # 准备一个字典，用字典结构存储决策树的信息
+  ID3_Tree = {
+    best_features : {}
+  }
+  
+  # 将当前选出的最优划分特征列从数据集中删除
+  del feature_list[axis]
+  
+  # 获取最优划分特征列的所有取值
+  value_list = list(set(dataset.iloc[:, axis])) # set是python中的集合类型，自带去重特性 
+  
+  # for循环遍历当前选定的最优划分特征列的每一个取值
+  for value in value_list:
+    
+    # 开始递归建造ID3决策树
+    ID3_Tree[best_features][value] = createID3Tree(getSplitData(dataset, axis, value))
+    
+  return ID3_Tree
+
+final_ID3Tree = createID3Tree(dataset)
+
+final_ID3Tree
+  
+'''
+{
+  '是否陪伴':{
+    0:{
+      '是否玩游戏':{
+        0: '不是',
+        1: '是'
+      }
+    }, 
+    1: '不是'
+  }
+}
+'''    
+```
+
+<img src="img/image-20240327110459432.png" alt="image-20240327110459432" style="zoom: 50%;" />
+
+### Decision Tree Model - C4.5 Algorithm
+
+In the C4.5 model, feature selection is changed to using the information gain rate criterion
+
+### Decision Tree Model - CART Algorithm
+
+#### Pruning Decision Tree 
+
+The process of removing some leaf nodes in the decision tree
+
+Common pruning strategies include $\textcolor{orange}{Pre-Pruning}$ and $\textcolor{orange}{Post-Pruning}$​
+
+Differentiation between Pre-Pruning and Post-Pruning：
+
+| main points        |                         Pre-Pruning                          | Post-Pruning                                                 |
+| ------------------ | :----------------------------------------------------------: | ------------------------------------------------------------ |
+| Number of branches |             Many branches have not been expanded             | Retained more branches                                       |
+| Fit risk           | Reduced the risk of overfitting, but due to the nature of greedy algorithms, it prohibits the expansion of subsequent branches and brings the risk of underfitting | Create a decision tree first and then examine it one by one from bottom to top, ensuring the prevention of overfitting while reducing the risk of underfitting, resulting in stronger generalization ability |
+| Time cost          |                Low training and testing costs                | Training expenses are too high                               |
+
+We mainly discuss the implementation process of $\textcolor{orange}{Cost\ Complexity\ Pruning.\ CCP}$(代价复杂度剪枝)
+
