@@ -319,3 +319,200 @@ Gini(D|A) = \frac{D_1}{D}Gini(D_1) + \frac{|D_2|}{D}Gini(D_2)
 $$
 
 $\textcolor{orange}{|D|}$ represents the number of samples in dataset $\textcolor{orange}{D}$,  $\textcolor{orange}{D_1}$ and $\textcolor{orange}{D_2}$ represent the number of samples in subsets
+
+## DEMO07_DECISION_TREE_CLASSIFIER_FOR_SKLEARN_DATA
+
+```python
+# 导包
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 导入CART分类树模型对象
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
+
+# 导入红酒数据集
+from sklearn.datasets import load_wine
+
+# 导入数据集划分对象
+from sklearn.model_selection import train_test_split
+
+# 导入分类模型的评估指标accuracy_score
+from sklearn.metrics import accuracy_score
+
+# 导入graphviz工具依赖项
+import graphviz
+
+from IPython.core.interactiveshell import InteractiveShell # 这个对象设置所有行全部输出
+  
+# 设置该对象ast_node_interactivity的属性值为all，表示notebook下每一行有输出的代码全部输出运算结果
+InteractiveShell.ast_node_interactivity = "all"
+
+# 解决坐标轴刻度负号乱码
+plt.rcParams['axes.unicode_minus'] = False
+
+# 解决中文乱码问题
+plt.rcParams['font.sans-serif'] = ['Simhei']
+plt.style.use('ggplot')
+```
+
+```python
+# 加载数据
+dataset = load_wine()
+x = dataset.data
+y = dataset.target
+
+pd.DataFrame(x, columns = dataset.feature_names)
+
+pd.DataFrame(y).value_counts()
+
+x.shape
+```
+
+```python
+# 划分数据集
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y, test_size=0.3, random_state=123)
+```
+
+```python
+# 构建CART分类器模型对象
+clf = DecisionTreeClassifier(
+  criterion = 'gini',
+  random_state = 123,
+  # splitter = 'beat'
+  max_depth = 2,
+  min_samples_leaf = 2,
+  min_samples_split = 10
+  
+)
+
+# 完成模型训练
+clf = clf.fit(Xtrain, Ytrain)
+
+# 测试集预测结果
+y_pred = clf.predict(Xtest)
+
+# 使用accuracy_score评估预测的准确率
+accuracy_score(y_pred, Ytest)
+```
+
+```python
+# 可视化当前决策树模型
+dot_data = export_graphviz(
+  clf,
+  out_file=None,
+  feature_names=dataset.feature_names,
+  class_names=[str(i[0]) for i in list(pd.DataFrame(y).value_counts().index)],
+  filled = True,
+  rounded = True
+)
+
+# 可视化呈现
+graph = graphviz.Source(dot_data)
+graph
+```
+
+```python
+# 决策树对象相关的重要属性
+
+# 1.显示各个特征的重要性
+# clf.feature_importances_
+[*zip(dataset.feature_names, clf.feature_importances_)]
+```
+
+![image-20240328134224864](img/image-20240328134224864.png)
+
+```python
+# 返回经过决策树模型的训练，每一个训练样本决策树将其分到了哪一个叶子节点
+clf.apply(Xtrain)
+```
+
+![image-20240328134253775](img/image-20240328134253775.png)
+
+```python
+# 返回树节点的个数
+clf.tree_.node_count
+```
+
+```python
+# 返回每个节点对应的特征索引值
+clf.tree_.feature
+```
+
+![image-20240328134330914](img/image-20240328134330914.png)
+
+```python
+# 查看当前决策树模型在训练集上的表现如何
+clf.score(Xtrain, Ytrain)
+clf.score(Xtest, Ytest)
+```
+
+![image-20240328134348188](img/image-20240328134348188.png)
+
+```python
+# 以max_depth为例，对该剪枝超参数进行调优，确定该参数的最优取值
+# 准备一个scores数组，准备保存评分数组
+scores = []
+
+for i in range(3, 10):
+  
+  # 构建分类树模型
+  clf = DecisionTreeClassifier(
+    criterion = 'gini',
+    max_depth = i
+  )
+  
+  # 训练模型
+  clf = clf.fit(Xtrain, Ytrain)
+  
+  # 评估模型预测准确率
+  scores.append(clf.score(Xtest, Ytest))
+  
+plt.plot(range(3, 10), scores, color = 'red', label = '学习曲线')
+
+print('经过上述超参数学习曲线对剪枝超参数max_depth的调优，结论：当max_depth参数取值为{}时，模型对应获得了最高的准确率：{}'.format(scores.index(max(scores)) +3, max(scores)))
+```
+
+<img src="img/image-20240328134414475.png" alt="image-20240328134414475" style="zoom:50%;" />
+
+```python
+# 构建分类树模型
+clf = DecisionTreeClassifier(
+  criterion = 'gini',
+  max_depth = 2,
+  ccp_alpha = 0.01572
+)
+  
+# 训练模型
+clf = clf.fit(Xtrain, Ytrain)
+  
+# 评估模型预测准确率
+accuracy_score(y_pred, Ytest)
+```
+
+```python
+# CCP路径计算API
+ccp_path = clf.cost_complexity_pruning_path(Xtrain, Ytrain)
+print('ccp_alphas:{}'.format(ccp_path.ccp_alphas))
+print('impurities:{}'.format(ccp_path.impurities))
+```
+
+![image-20240328134443242](img/image-20240328134443242.png)
+
+```python
+# 可视化当前决策树模型
+dot_data = export_graphviz(
+  clf,
+  out_file=None,
+  feature_names=dataset.feature_names,
+  class_names=[str(i[0]) for i in list(pd.DataFrame(y).value_counts().index)],
+  filled = True,
+  rounded = True
+)
+
+# 可视化呈现
+graph = graphviz.Source(dot_data)
+graph
+```
+
+<img src="img/image-20240328134503702.png" alt="image-20240328134503702" style="zoom: 50%;" />
