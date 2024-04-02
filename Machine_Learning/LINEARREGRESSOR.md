@@ -166,3 +166,73 @@ r2_Square(data, linearRegressorModels)
 ```
 
 ![image-20240402104328515](img/image-20240402104328515.png)
+
+## DEMO11_LINEARREGRESSOR_FOR_SKLEARN
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+
+# 导入数据集划分对象
+from sklearn.model_selection import train_test_split
+
+# 导入波士顿房价数据集
+data_url = "http://lib.stat.cmu.edu/datasets/boston"
+raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
+data = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
+target = raw_df.values[1::2, 2]
+
+# 导入回归模型的评估指标
+from sklearn.metrics import mean_squared_error, r2_score  
+
+from IPython.core.interactiveshell import InteractiveShell # 这个对象设置所有行全部输出
+  
+# 设置该对象ast_node_interactivity的属性值为all，表示notebook下每一行有输出的代码全部输出运算结果
+InteractiveShell.ast_node_interactivity = "all"
+
+# 解决坐标轴刻度负号乱码
+plt.rcParams['axes.unicode_minus'] = False
+
+# 解决中文乱码问题
+plt.rcParams['font.sans-serif'] = ['Simhei']
+plt.style.use('ggplot')
+```
+
+```python
+# 加载数据
+x = data
+y = target
+x.shape
+```
+
+```python
+# 数据集划分
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y, test_size=0.3, random_state=123)
+```
+
+```python
+# 构建线性回归模型对象
+reg = LinearRegression()
+
+# 训练模型
+reg = reg.fit(Xtrain, Ytrain)
+
+# 模型预测
+y_pred = reg.predict(Xtest)
+
+# 模型评估
+mean_squared_error(Ytest, y_pred)
+r2_score(Ytest, y_pred)
+
+# 查看当前回归模型的截距
+reg.intercept_
+
+# 查看当前回归模型的参数
+reg.coef_
+```
+
+<img src="img/image-20240402120642217.png" alt="image-20240402120642217" style="zoom: 50%;" />
