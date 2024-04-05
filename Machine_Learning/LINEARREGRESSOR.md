@@ -1,4 +1,4 @@
-# LINEARREGRESSOR
+#  LINEARREGRESSOR
 
 ## DEMO10_LINEARREGRESSOR_FOR_PYTHON
 
@@ -166,6 +166,44 @@ r2_Square(data, linearRegressorModels)
 ```
 
 ![image-20240402104328515](img/image-20240402104328515.png)
+
+```python
+# 岭回归算法手撕Python实现
+
+def linearRiddgeRegressorModels(dataset,lambdas = 0.0):
+  
+  '''
+    构建岭回归模型
+  '''
+  
+  # 1.从数据集中提取特征，构建为一个二维的矩阵
+  xMat = np.mat(dataset.iloc[:, : -1].values)
+  
+  # 2.从数据集中提取标签 - 注意：在取标签的时候，是一个行向量，为了方便后续使用，需要转置为一个列向量
+  yMat = np.mat(dataset.iloc[:, -1  ].values).T
+  
+  # 3.先计算xTx这个n阶方阵
+  xTx = xMat.T * xMat
+  
+  # 对于给定的参数lambda，如果不为0就代表需要使用岭回归算法，即代表需要加入L2正则化项，即代表xTx需要加一个同型的n阶对角阵λ * E
+  if lambdas != 0.0:
+    
+    # 加入L2正则化项 - numpy生成一个单位矩阵的方法np.eye(shape)
+    matrixs = xTx + np.eye(xMat.shape[1]) * lambdas
+    return matrixs.I * (xMat.T * yMat)
+  else:
+    
+    # 如何λ等于0，假设直接表示不需要L2正则化，则直接返回空None
+    return linearRegressorModels(dataset)
+```
+
+```python
+# 测试  
+# linearRiddgeRegressorModels(data, 0.00001)
+
+# 使用普通多元线性回归构建一个模型，再使用加入了L2正则化项后的岭回归构建一个模型，采用相同的数据集，获得参数w计算结果后，对于二者模所得到的r^2分数
+r2_Square(data, linearRiddgeRegressorModels)
+```
 
 ## DEMO11_LINEARREGRESSOR_FOR_SKLEARN
 
