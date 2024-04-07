@@ -79,4 +79,4 @@ clf.coef_
 
 <img src="img/image-20240407155053917.png" alt="image-20240407155053917" style="zoom:50%;" />
 
-## 
+## DEMO15_LOGIC_REGRESSOR_FOR_SKLEARN
