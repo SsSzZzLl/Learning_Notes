@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-10 10:34:27
 LastEditors: Szl
-LastEditTime: 2024-04-10 15:55:23
+LastEditTime: 2024-04-10 16:36:48
 Description: 完成全连接神经网络的模型构建
 '''
 
@@ -60,3 +60,4 @@ if __name__ == '__main__':
   x = torch.randn(size = (16, HP.in_features)).to(HP.device)
   y_pred = model(x)
   print(y_pred.size())
+  print(y_pred)
