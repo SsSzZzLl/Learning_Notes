@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-10 10:33:54
 LastEditors: Szl
-LastEditTime: 2024-04-10 11:02:24
+LastEditTime: 2024-04-10 14:27:22
 Description: 编写config配置文件，配置所需的超参
 '''
 
