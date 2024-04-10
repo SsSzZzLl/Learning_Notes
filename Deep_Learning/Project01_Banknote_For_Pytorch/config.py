@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-10 10:33:54
 LastEditors: Szl
-LastEditTime: 2024-04-10 14:27:22
+LastEditTime: 2024-04-10 15:05:34
 Description: 编写config配置文件，配置所需的超参
 '''
 
@@ -20,7 +20,7 @@ class Hyperparameter(object):
 
   # 第一部分参数：data - 数据集相关的超参数配置
   
-  device = 'cude' # 该参数表示所需的硬件算力类型，取值为cuda还是cpu
+  device = 'cpu' # 该参数表示所需的硬件算力类型，取值为cuda还是cpu
   data_dir = './data' # 数据集的根目录路径
   data_path = './data/data_banknote_authentication.txt' # 指定原始数据集的路径
   
