@@ -17,7 +17,7 @@ import numpy as np
 # codings
 # -----------------------
 
-class BankNoteDateset(torch.utils.data.Dataset):
+class BankNoteDataset(torch.utils.data.Dataset):
   
   '''
     实现dataloader对象完成数据集按batch_size进行批量加载
@@ -56,7 +56,7 @@ class BankNoteDateset(torch.utils.data.Dataset):
 if __name__ == '__main__':
   
   # 实例化当前类创建对象
-  banknote_dataset = BankNoteDateset(HP.testset_path) # 使用测试集测试
+  banknote_dataset = BankNoteDataset(HP.testset_path) # 使用测试集测试
   
   # 使用dataloader对象封装数据集加载对象
   banknote_dataloader = DataLoader(banknote_dataset, batch_size = 16, shuffle = True, drop_last = True)

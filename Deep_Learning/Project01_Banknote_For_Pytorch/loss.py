@@ -2,14 +2,14 @@
 Author: Szl
 Date: 2024-04-10 10:34:14
 LastEditors: Szl
-LastEditTime: 2024-04-12 16:46:45
+LastEditTime: 2024-04-13 16:37:13
 Description: 
 '''
 
 # Package and Modules import statements
 # -----------------------
 
-from torch import nn
+import torch.nn as nn
 
 
 # codings

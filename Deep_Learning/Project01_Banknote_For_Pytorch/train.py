@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-10 10:34:40
 LastEditors: Szl
-LastEditTime: 2024-04-12 19:02:26
+LastEditTime: 2024-04-13 16:52:31
 Description: 实现模型的训练过程，要求记录训练日志且训练过程中完成模型的依次训练保存
 '''
 
@@ -18,6 +18,7 @@ import torch.nn as nn
 
 from loss import get_loss_func
 from model import BankNokeClassificationModel
+from utils import evaluate, save_checkpoint
 from config import HP
 from dataset_banknote_dataloader import BankNoteDataset
 from torch.utils.data import DataLoader
@@ -54,7 +55,7 @@ def train():
   criterion = get_loss_func()
   
   # 4.定义优化器
-  opt = optim.Adam(model.parameters(), lr = HP.lr)
+  opt = optim.Adam(model.parameters(), lr = HP.init_lr)
   
   # 5.加载数据集 - 先加载训练集数据，然后封装为dataloader对象
   trainset = BankNoteDataset(HP.trainset_path)
@@ -105,10 +106,62 @@ def train():
   # 注意：torch为我们封装了模型进入训练状态，进入验证状态的方法，开启训练前需要确保模型加入训练状态
   model.train()
   
-  
+  # 定义一个模型训练的主循环main_loop
+  for epoch in range(start_epoch, HP.epoches):
+    print('Starting Epoch:{}, Step:{}'.format(epoch, len(train_loader) / HP.batch_size))
     
+    # 依据一个batch_size读取数据
+    for batch in train_loader:
+      
+      # 加载数据
+      x, y = batch
+      
+      # 梯度归零
+      opt.zero_grad()
+      
+      # 前向传播
+      pred = model(x)
+      
+      # 计算损失
+      loss = criterion(pred, y)
+      
+      # 开始反向传播
+      loss.backward()
+      
+      # 更新参数
+      opt.step()
+      
+      # 开始记录一个batch_size训练完成后产生的日志数据
+      logger.add_scalar('Loss/Train', loss, step)
+      
+      # 开始记录验证集的日志数据 - 逻辑是，每隔训练了多少步做一次验证集上的验证
+      if not step % HP.verbose_step: # 表示达到了新的10步训练，此时需要进行一次验证集loss计算
+        
+        # 计算模型在验证集上的loss
+        eval_loss = evaluate(model, dev_loader, criterion)
+        logger.add_scalar('Loss/Dev', eval_loss, step)
+        
+      # 保存模型 - 依据设定的save_step，即规定每训练完成200步进行一次模型保存
+      if not step % HP.save_step: 
+        model_path_name = 'model_{}_{}.pth'.format(epoch, step) # 保存的模型文件的名称
+        
+        # 完成模型保存
+        save_checkpoint(model, epoch, opt, os.path.join('model', model_path_name))
+      
+      # step需要自增
+      step += 1
+      
+      # 日志数据行缓存进行刷新
+      logger.flush()
+      print('Epoch : {} / {}, Step : {}, Train Loss : {}, Dev Loss : {}'.format(epoch, HP.epoches, step, loss.item(), eval_loss))
+      
+  # 关闭日志读写
+  logger.close()
   
   
 
 # run test UseCase if current modules in main
 # -----------------------
+
+if __name__ == '__main__':
+  train()
