@@ -3,7 +3,7 @@
 
 import os
 from config import HP
-from utils import recursive_fetching, get_all_files, load_meta, load_image
+from utils import recursive_fetching, load_meta, load_image
 import random
 import json
 
@@ -56,7 +56,7 @@ dataset_dicts = {}
 
 # 遍历所有数据
 for sample in dataset:
-  cls_id = class_mappers['class2id'][os.path.join(sample)[-1].split('-')[0]] # 获取样本的所属类别且将其映射为一个数值
+  cls_id = class_mappers['class2id'][os.path.split(sample)[-1].split('-')[0]] # 获取样本的所属类别且将其映射为一个数值
   
   # 如果当前类别不存在于dataset_dicts中
   if cls_id not in dataset_dicts:
@@ -100,17 +100,19 @@ def write_meta(dataset_path, dataset):
   
   '''
     根据传入的指定的数据集完成指定数据集meta文件的写入保存
-    ::
-    ::  
-    ::
+    :param dataset_path: meta文件的路径
+    :param dataset: 指定的数据集
+    :return: 
   '''
 
-with open(HP.metadata_train_path, 'w') as f:
-  for path in train_set:
-    cls_id = class_mappers['class2id'][os.path.split(path)[-1].split('-')[0]]
-    f.write('{}|{}\n'.format(cls_id, path))
+  with open(dataset_path, 'w') as f:
+    for path in dataset:
+      cls_id = class_mappers['class2id'][os.path.split(path)[-1].split('-')[0]]
+      f.write('{}|{}\n'.format(cls_id, path))
   
-  
+for data_meta_path, dataset in zip([HP.metadata_train_path, HP.metadata_eval_path, HP.metadata_test_path], [train_set, eval_set, test_set]):
+  write_meta(data_meta_path, dataset)
+ 
 # run test UseCase if current modules in main
 # -----------------------
 
