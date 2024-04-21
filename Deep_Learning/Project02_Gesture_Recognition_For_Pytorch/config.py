@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-21 12:48:28
 LastEditors: Szl
-LastEditTime: 2024-04-21 13:29:26
+LastEditTime: 2024-04-21 13:38:32
 Description: 完成基本的模型超参数配置
 '''
 # Package and Modules import statements
@@ -38,10 +38,41 @@ class Hyperparameters(object):
   train_data_root = './data/shp_marcel_train/Marcel-Train'
   test_data_root = './data/shp_marcel_test/Marcel-Test'
   
+  # 类别的数量
+  classes_num = 6
+  
+  # 固定随机种子，方便后续复现
+  seed = 1234
+  
   # model params
+  
+  # 输入图像的通道数
+  data_channels = 3
+  
+  # 卷积核的形状，即kernel_size
+  conv_kernel_size = 3
+  
+  # dropout正则化系数
+  fc_drop_prob = 0.3
   
   # train params
 
+  # batch_size - 一次训练输入多少条样本
+  batch_size = 32
+  
+  # 初始化学习率
+  init_lr = 5e-4
+  
+  # 训练轮数
+  epochs = 100
+  
+  # 每隔多少步打印一次日志，保存一次日志
+  verbose_step = 250
+  
+  # 每隔多少步保存一次模型
+  save_model = 500
+
+HP = Hyperparameters()
 
 # run test UseCase if current modules in main
 # -----------------------
