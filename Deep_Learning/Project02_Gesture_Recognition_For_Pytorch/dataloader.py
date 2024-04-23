@@ -2,7 +2,11 @@
 Author: Szl
 Date: 2024-04-21 12:51:52
 LastEditors: Szl
+<<<<<<< HEAD
 LastEditTime: 2024-04-22 21:58:29
+=======
+LastEditTime: 2024-04-22 13:03:47
+>>>>>>> f203aa3d913adecf074b0ffad7abbce0d28dd107
 Description: 
 '''
 # Package and Modules import statements
