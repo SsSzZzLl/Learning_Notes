@@ -18,7 +18,7 @@ class Hyperparameters(object):
   '''
 
   # data params
-  device = 'cpu' # cuda - 表示使用gpu加速
+  device = 'cuda' # cuda - 表示使用gpu加速
   data_root = './data' # 指定当前工程下数据集的根路径
   
   # 准备四个文件的路径
