@@ -65,7 +65,7 @@ for sample in dataset:
     
 # 开始进行数据集划分
 # 指定各个数据集的划分比例为8 : 1 : 1 
-train_ratio, eval_ratio, test_ratio = 0.6, 0.3, 0.1
+train_ratio, eval_ratio, test_ratio = 0.8, 0.1, 0.1
 
 # 准备划分的数据集
 train_set, eval_set, test_set = [], [], []
