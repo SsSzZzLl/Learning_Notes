@@ -1,0 +1,6 @@
+4|./data/shp_marcel_train/Marcel-Train\poop\poop-train01.jpg
+5|./data/shp_marcel_train/Marcel-Train\stone\stone-train01.jpg
+0|./data/shp_marcel_test/Marcel-Test\biscuits\biscuits-sample02.jpg
+1|./data/shp_marcel_train/Marcel-Train\bone\bone-train01.jpg
+3|./data/shp_marcel_test/Marcel-Test\plastic\plastic-test01.jpg
+2|./data/shp_marcel_train/Marcel-Train\bread\bread-train01.jpg

@@ -1,0 +1,12 @@
+2|./data/shp_marcel_test/Marcel-Test\bread\bread-test02.jpg
+5|./data/shp_marcel_test/Marcel-Test\stone\stone-test01.jpg
+1|./data/shp_marcel_test/Marcel-Test\bone\bone-test02.jpg
+2|./data/shp_marcel_train/Marcel-Train\bread\bread-train02.jpg
+1|./data/shp_marcel_test/Marcel-Test\bone\bone-test01.jpg
+3|./data/shp_marcel_test/Marcel-Test\plastic\plastic-test02.jpg
+3|./data/shp_marcel_train/Marcel-Train\plastic\plastic-train02.jpg
+0|./data/shp_marcel_train/Marcel-Train\biscuits\biscuits-train01.jpg
+5|./data/shp_marcel_train/Marcel-Train\stone\stone-train02.jpg
+4|./data/shp_marcel_test/Marcel-Test\poop\poop-test01.jpg
+0|./data/shp_marcel_test/Marcel-Test\biscuits\biscuits-sample01.jpg
+4|./data/shp_marcel_test/Marcel-Test\poop\poop-test02.jpg
