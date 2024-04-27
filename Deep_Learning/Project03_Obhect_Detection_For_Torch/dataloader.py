@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-27 08:56:55
 LastEditors: Szl
-LastEditTime: 2024-04-27 10:11:33
+LastEditTime: 2024-04-27 12:28:05
 Description: 
 '''
 # Package and Modules import statements
@@ -26,7 +26,7 @@ hg_transform = T.Compose([ # 完成一系列的数据增广操作
   T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)) # 图像的标准化
 ])
 
-class HandGestureDataset(torch.utils.data.Dataset):
+class ObjectDetectionDataset(torch.utils.data.Dataset):
   
   def __init__(self, metadata_path):
     self.dataset = load_meta(meta_path = metadata_path)
