@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:45
 LastEditors: Szl
-LastEditTime: 2024-04-29 13:59:36
+LastEditTime: 2024-04-29 15:46:45
 Description: 
 '''
 # Package and Modules import statements
@@ -30,7 +30,7 @@ class Hyperparameters(object):
   
   epochs = 40 # 训练轮数为40轮
   
-  log_root = './log/' + time.strptime('%Y-%m-%d-%H-%M-%S',time.gmtime()) # 日志文件路径并设置日志的命名规则
+  log_root = "./log/" + time.strftime('%Y-%m-%d-%H-%M-%S',time.gmtime()) # 日志存放位置
 
   model_root = './model/' # 模型存放位置
 
