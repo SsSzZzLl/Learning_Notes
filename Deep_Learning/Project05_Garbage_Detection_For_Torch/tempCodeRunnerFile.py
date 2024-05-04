@@ -1,1 +1,1 @@
-time.gmtime()
+correctNum.is_cuda

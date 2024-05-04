@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:45
 LastEditors: Szl
-LastEditTime: 2024-04-29 15:46:45
+LastEditTime: 2024-04-29 19:26:19
 Description: 
 '''
 # Package and Modules import statements
@@ -24,13 +24,17 @@ class Hyperparameters(object):
   
   labels = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash'] # 标签名称 / 文件夹名称
 
-  batch_size = 32 # 每次训练的样本数量
+  num_workers = 0 # 加载数据时使用的线程数量
+
+  batch_size = 128 # 每次训练的样本数量
   
   init_lr = 5e-4 # 初始学习率 科学计数法表示
   
   epochs = 40 # 训练轮数为40轮
   
   log_root = "./log/" + time.strftime('%Y-%m-%d-%H-%M-%S',time.gmtime()) # 日志存放位置
+
+  seed = 1234
 
   model_root = './model/' # 模型存放位置
 

@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:39
 LastEditors: Szl
-LastEditTime: 2024-04-29 15:52:11
+LastEditTime: 2024-04-30 21:51:36
 Description: 
 '''
 # Package and Modules import statements
@@ -28,59 +28,62 @@ model.to(HP.device) # 模型传入cuda
 criterion = nn.CrossEntropyLoss() # 交叉熵损失函数
 
 # 3. 定义优化器
-optimizer = optim.Adam(model.parameters(), lr=0.001) # 自适应矩估计优化
+optimizer = optim.Adam(model.parameters(), lr = 0.001) # 自适应矩估计优化
 
 # 4. 创建writer
-writer = SummaryWriter(log_dir=HP.log_root, flush_secs=500)
+writer = SummaryWriter(log_dir = HP.log_root, flush_secs = 500)
 
 def train(epoch):
   
   '''
     训练函数
   '''
-
-  # 1. 获取训练集dataLoader
+  
+  # 1. 获取dataLoader
   loader = trainLoader
   
   # 2. 调整为训练状态
   model.train()
-
+  
   print()
   print('========== Train Epoch:{} Start =========='.format(epoch))
   
   epochLoss = 0  # 每个epoch的损失
   epochAcc = 0  # 每个epoch的准确率
   correctNum = 0  # 正确预测的数量
-  
+
   for data, label in loader:
     
     data, label = data.to(HP.device), label.to(HP.device)  # 加载到对应设备
-
+    
     batchAcc = 0  # 单批次正确率
     batchCorrectNum = 0  # 单批次正确个数
     optimizer.zero_grad()  # 清空梯度
     output = model(data)  # 获取模型输出
     loss = criterion(output, label)  # 计算损失
-
+    
     loss.backward()  # 反向传播梯度
     optimizer.step()  # 更新参数
     epochLoss += loss.item() * data.size(0)  # 计算损失之和
-    
+  
     # 计算正确预测的个数
-    labels = torch.argmax(label, dim=1)
-    outputs = torch.argmax(output, dim=1)
-
+    labels = torch.argmax(label, dim = 1)
+    outputs = torch.argmax(output, dim = 1)
+    
     for i in range(0, len(labels)):
       
       if labels[i] == outputs[i]:
         
         correctNum += 1
         batchCorrectNum += 1
-
+        
     batchAcc = batchCorrectNum / data.size(0)
     
     print("Epoch:{}\t TrainBatchAcc:{}".format(epoch, batchAcc))
 
+  print(epochLoss)
+  print(len(trainLoader.dataset))
+  
   epochLoss = epochLoss / len(trainLoader.dataset)  # 平均损失
   epochAcc = correctNum / len(trainLoader.dataset)  # 正确率
   
@@ -90,6 +93,7 @@ def train(epoch):
   writer.add_scalar("train_acc", epochAcc, epoch)  # 写入日志
   
   return epochAcc
+
 
 def val(epoch):
   
@@ -157,13 +161,20 @@ def val(epoch):
 # -----------------------
 
 if __name__ == '__main__':
+  
     maxAcc = 0.75
-    for epoch in range(1,HP.epochs + 1):
+    
+    for epoch in range(1, HP.epochs + 1):
+      
         trainAcc = train(epoch)
         valAcc = val(epoch)
+        
         if valAcc > maxAcc:
+          
             maxAcc = valAcc
+            
             # 保存最大模型
-            torch.save(model, HP.modelDir + "weather-" + HP.strftime('%Y-%m-%d-%H-%M-%S', time.gmtime()) + ".pth")
+            torch.save(model, HP.model_root + "weather-" + time.strftime('%Y-%m-%d-%H-%M-%S', time.gmtime()) + ".pth")
+            
     # 保存模型
-    torch.save(model,HP.modelDir+"weather-"+time.strftime('%Y-%m-%d-%H-%M-%S',time.gmtime())+".pth")
+    torch.save(model,HP.model_root+"weather-"+time.strftime('%Y-%m-%d-%H-%M-%S',time.gmtime())+".pth")

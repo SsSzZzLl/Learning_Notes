@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:52
 LastEditors: Szl
-LastEditTime: 2024-04-29 15:57:37
+LastEditTime: 2024-04-29 17:37:20
 Description: 
 '''
 # Package and Modules import statements
@@ -15,6 +15,8 @@ import torch.utils.data as Data
 from config import HP
 from PIL import Image
 from torchvision import transforms as T
+from torch.utils.data import Dataset, DataLoader
+
 
 # codings
 # -----------------------
@@ -64,7 +66,7 @@ def loadDataFromDir():
 
   return images, labels
 
-def GarbageDataSet(Dataset):
+class GarbageDataSet(Dataset):
   
   '''
     自定义DataSet
@@ -111,18 +113,18 @@ def splitData(dataset):
   validation_length = total_length - train_length
   
   # 利用Data.random_split()直接切分数据集, 按照80%, 20%的比例进行切分
-  train_dataset,validation_dataset = Data.random_split(dataset = dataset, lengths = [train_length, validation_length])
+  train_dataset, validation_dataset = Data.random_split(dataset = dataset, lengths = [train_length, validation_length])
   
   return train_dataset, validation_dataset
 
 # 1. 分割数据集
-train_dataset, validation_dataset = (GarbageDataSet()) 
+train_dataset, validation_dataset = splitData(GarbageDataSet())
 
 # 2. 训练数据集加载器
-trainLoader = GarbageDataSet(train_dataset, batch_size = HP.batch_size, shuffle = True, num_workers = HP.num_workers) 
+trainLoader = DataLoader(train_dataset, batch_size = HP.batch_size, shuffle = False, num_workers = HP.num_workers) 
 
 # 3. 验证集数据加载器
-valLoader = GarbageDataSet(validation_dataset, batch_size = HP.batch_size, shuffle = False,num_workers = HP.num_workers)
+valLoader = DataLoader(validation_dataset, batch_size = HP.batch_size, shuffle = False, num_workers = HP.num_workers)
   
 # run test UseCase if current modules in main
 # -----------------------
