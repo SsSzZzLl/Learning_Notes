@@ -1,1 +1,0 @@
-correctNum.is_cuda
