@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:39
 LastEditors: Szl
-LastEditTime: 2024-05-06 13:45:35
+LastEditTime: 2024-05-06 13:54:31
 Description: 
 '''
 # Package and Modules import statements
@@ -80,12 +80,9 @@ def train(epoch):
     batchAcc = batchCorrectNum / data.size(0)
     
     print("Epoch:{}\t TrainBatchAcc:{}".format(epoch, batchAcc))
-
-  # print(epochLoss)
-  # print(len(trainLoader.dataset))
   
-  epochLoss = epochLoss / len(trainLoader.dataset)  # 平均损失
-  epochAcc = correctNum / len(trainLoader.dataset)  # 正确率
+    epochLoss = epochLoss / len(trainLoader.dataset)  # 平均损失
+    epochAcc = correctNum / len(trainLoader.dataset)  # 正确率
   
   print("Epoch:{}\t Loss:{} \t Acc:{}".format(epoch, epochLoss, epochAcc))
   
@@ -143,10 +140,11 @@ def val(epoch):
           batchCorrectNum += 1
           
       batchAcc = batchCorrectNum / data.size(0)
+      
       print("Epoch:{}\t ValBatchAcc:{}".format(epoch, batchAcc))
 
-    epochLoss = epochLoss / len(valLoader.dataset)  # 平均损失
-    epochAcc = correctNum / len(valLoader.dataset)  # 正确率
+      epochLoss = epochLoss / len(valLoader.dataset)  # 平均损失
+      epochAcc = correctNum / len(valLoader.dataset)  # 正确率
     
     print("Epoch:{}\t Loss:{} \t Acc:{}".format(epoch, epochLoss, epochAcc))
     
