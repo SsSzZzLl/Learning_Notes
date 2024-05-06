@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:39
 LastEditors: Szl
-LastEditTime: 2024-04-30 21:51:36
+LastEditTime: 2024-05-06 13:45:35
 Description: 
 '''
 # Package and Modules import statements
@@ -81,8 +81,8 @@ def train(epoch):
     
     print("Epoch:{}\t TrainBatchAcc:{}".format(epoch, batchAcc))
 
-  print(epochLoss)
-  print(len(trainLoader.dataset))
+  # print(epochLoss)
+  # print(len(trainLoader.dataset))
   
   epochLoss = epochLoss / len(trainLoader.dataset)  # 平均损失
   epochAcc = correctNum / len(trainLoader.dataset)  # 正确率
