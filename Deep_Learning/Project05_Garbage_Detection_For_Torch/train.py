@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:39
 LastEditors: Szl
-LastEditTime: 2024-05-06 13:54:31
+LastEditTime: 2024-05-08 12:46:50
 Description: 
 '''
 # Package and Modules import statements
@@ -60,14 +60,22 @@ def train(epoch):
     batchCorrectNum = 0  # 单批次正确个数
     optimizer.zero_grad()  # 清空梯度
     output = model(data)  # 获取模型输出
+    # label = label.float()
+    label = torch.as_tensor(label, dtype=torch.long)
+    
+    # if len(output.shape) == 1: # 方式出现训练最后一个step时，出现v是一维的情况
+    # output = torch.unsqueeze(output, 0)
+
     loss = criterion(output, label)  # 计算损失
     
     loss.backward()  # 反向传播梯度
     optimizer.step()  # 更新参数
     epochLoss += loss.item() * data.size(0)  # 计算损失之和
   
+    label.shape
+  
     # 计算正确预测的个数
-    labels = torch.argmax(label, dim = 1)
+    labels = torch.argmax(label, dim = 0)
     outputs = torch.argmax(output, dim = 1)
     
     for i in range(0, len(labels)):

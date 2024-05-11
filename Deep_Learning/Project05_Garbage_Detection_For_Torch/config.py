@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:45
 LastEditors: Szl
-LastEditTime: 2024-04-29 19:26:19
+LastEditTime: 2024-05-08 12:37:58
 Description: 
 '''
 # Package and Modules import statements
@@ -26,7 +26,7 @@ class Hyperparameters(object):
 
   num_workers = 0 # 加载数据时使用的线程数量
 
-  batch_size = 128 # 每次训练的样本数量
+  batch_size = 32 # 每次训练的样本数量
   
   init_lr = 5e-4 # 初始学习率 科学计数法表示
   

@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:42:52
 LastEditors: Szl
-LastEditTime: 2024-04-29 17:37:20
+LastEditTime: 2024-05-07 08:16:24
 Description: 
 '''
 # Package and Modules import statements
@@ -54,9 +54,9 @@ def loadDataFromDir():
       
       # 5. 构造label
       categoryIndex = HP.labels.index(d)  # 获取分类下标
-      label = [0] * 8  # 初始化label
-      label[categoryIndex] = 1 # 根据下标确定目标值
-      label = torch.tensor(label,dtype = torch.float) # 转为tensor张量
+      # label = [0] * 8  # 初始化label
+      # label[categoryIndex] = 1 # 根据下标确定目标值
+      label = torch.tensor(categoryIndex, dtype = torch.float) # 转为tensor张量
 
       # 6. 添加到目标值列表
       labels.append(label)

@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-04-29 13:43:10
 LastEditors: Szl
-LastEditTime: 2024-04-30 21:53:47
+LastEditTime: 2024-05-06 15:55:41
 Description: 
 '''
 # Package and Modules import statements
@@ -32,8 +32,8 @@ class GarbageDataSet(nn.Module):
     self.net = net
     self.relu = nn.ReLU()
     self.dropout = nn.Dropout(0.1)
-    self.fc = nn.Linear(1024, 6) # 全连接层1024个输入，6个输出
-    self.output = nn.Softmax(dim=1) # 输出层使用Softmax激活函数
+    self.fc = nn.Linear(1000, 6)
+    self.output = nn.Softmax(dim = 1) # 输出层使用Softmax激活函数
 
   def forward(self, x):
     x = self.net(x)
