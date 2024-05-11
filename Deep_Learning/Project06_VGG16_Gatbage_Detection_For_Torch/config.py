@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-05-11 17:25:38
 LastEditors: Szl
-LastEditTime: 2024-05-11 17:28:02
+LastEditTime: 2024-05-11 19:46:23
 Description: 
 '''
 # Package and Modules import statements
@@ -24,7 +24,7 @@ class Hyperparameters(object):
   
   labels = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash'] # 标签名称 / 文件夹名称
 
-  num_workers = 0 # 加载数据时使用的线程数量
+  # num_workers = 0 # 加载数据时使用的线程数量
 
   batch_size = 32 # 每次训练的样本数量
   
