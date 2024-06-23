@@ -2,7 +2,7 @@
 Author: Szl
 Date: 2024-06-16 23:11:56
 LastEditors: Szl
-LastEditTime: 2024-06-23 15:45:08
+LastEditTime: 2024-06-23 15:49:43
 Description: 
 '''
 
@@ -49,9 +49,9 @@ def main():
     
   # 建立保存验证集的文件夹
   
-  val_root = os.path.join(data_root, "val")
+  val_root = os.path.join(data_root, 'val')
   mk_file(val_root)
-  for cal in flower_class:
+  for cla in flower_class:
     
     # 建立每个类别对应的文件夹
     
@@ -64,7 +64,7 @@ def main():
     num = len(images)
     # 随机采样验证集的索引
     
-    eval_index = random.sample(images, k=int(num * split_rate))
+    eval_index = random.sample(images, k = int(num * split_rate))
     for index, image in enumerate(images):
       
       if image in eval_index:
