@@ -18,11 +18,11 @@ class BasicBlock(nn.Module):
     
     super(BasicBlock, self).__init__()
     
-    self.conv1 = nn.Conv2d(in_channel = in_channel, out_channel = out_channel, kernel_size = 3, stride = stride, padding = 1, bias = False)
+    self.conv1 = nn.Conv2d(in_channels = in_channel, out_channels = out_channel, kernel_size = 3, stride = stride, padding = 1, bias = False)
     self.bn1 = nn.BatchNorm2d(out_channel)
     self.relu = nn.ReLU(inplace = True)
     
-    self.conv2 = nn.Conv2d(in_channel = out_channel, out_channel = out_channel, kernel_size = 3, stride = 1, padding = 1, bias = False)
+    self.conv2 = nn.Conv2d(in_channels = out_channel, out_channels = out_channel, kernel_size = 3, stride = 1, padding = 1, bias = False)
     self.bn2 = nn.BatchNorm2d(out_channel)
     
     self.downsample = downsample
@@ -100,7 +100,7 @@ class ResNet(nn.Module):
     
     self.in_channel = 64
     
-    self.conv1 = nn.Conv2d(in_channel = 3, out_channel = 64, kernel_size = 7, stride = 2, padding = 3, bias = False)
+    self.conv1 = nn.Conv2d(in_channels = 3, out_channels = 64, kernel_size = 7, stride = 2, padding = 3, bias = False)
     self.bn1 = nn.BatchNorm2d(self.in_channel)
     self.relu = nn.ReLU(inplace = True)
     self.max_pool = nn.MaxPool2d(kernel_size = 3, stride = 2, padding = 1)
@@ -126,7 +126,7 @@ class ResNet(nn.Module):
     if stride != 1 or self.in_channel != channel * block.expansion:
       
       downsample = nn.Sequential(
-        nn.Conv2d(in_channel = self.in_channel, out_channel = channel * block.expansion, kernel_size = 1, stride = stride, bias = False),
+        nn.Conv2d(in_channels = self.in_channel, out_channels = channel * block.expansion, kernel_size = 1, stride = stride, bias = False),
         nn.BatchNorm2d(channel * block.expansion)
       )
     
